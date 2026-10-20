@@ -1,0 +1,195 @@
+/* ==========================================================
+   LAST HUNGER — Transiciones y animaciones compartidas
+   Se enlaza en todas las páginas, después del CSS propio
+   de cada sección, para no pisar sus estilos particulares.
+   ========================================================== */
+
+/* ---------- Fondo animado (ascuas flotando) ---------- */
+
+#lh-bg-canvas{
+    position:fixed;
+    inset:0;
+    width:100%;
+    height:100%;
+    z-index:-2;
+    pointer-events:none;
+    display:block;
+}
+
+/* ---------- Fundido de entrada / salida de página ---------- */
+
+body.lh-page{
+    opacity:0;
+    transition:opacity .45s ease, transform .45s cubic-bezier(.22,1,.36,1);
+    transform:scale(0.99);
+}
+
+body.lh-page.lh-loaded{
+    opacity:1;
+    /* "none" (y no scale(1)): cualquier transform en <body> hace que el
+       fondo y las ascuas "fixed" se desplacen con la página. */
+    transform:none;
+}
+
+body.lh-page.lh-leaving{
+    opacity:0;
+    transform:scale(0.99);
+}
+
+/* ---------- Cortina de transición estilo "wipe" (inspirada en Nintendo) ---------- */
+
+.lh-wipe{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+    pointer-events:none;
+    overflow:hidden;
+}
+
+.lh-wipe-panel{
+    position:absolute;
+    inset:0;
+    transform:translateX(0);
+}
+
+.lh-wipe-a{
+    background:#050302;
+}
+
+.lh-wipe-b{
+    background:#eab308;
+    box-shadow:0 0 50px 8px rgba(234,179,8,.65);
+}
+
+/* Abrir: los paneles se deslizan fuera de la pantalla y revelan la página */
+.lh-wipe.lh-wipe-open .lh-wipe-b{
+    transform:translateX(102%);
+    transition:transform .5s cubic-bezier(.76,0,.2,1);
+}
+
+.lh-wipe.lh-wipe-open .lh-wipe-a{
+    transform:translateX(102%);
+    transition:transform .5s cubic-bezier(.76,0,.2,1) .12s;
+}
+
+/* Cerrar: los paneles vuelven a cubrir la pantalla antes de navegar */
+.lh-wipe.lh-wipe-shut .lh-wipe-a{
+    transform:translateX(0);
+    transition:transform .38s cubic-bezier(.76,0,.2,1);
+}
+
+.lh-wipe.lh-wipe-shut .lh-wipe-b{
+    transform:translateX(0);
+    transition:transform .38s cubic-bezier(.76,0,.2,1) .08s;
+}
+
+/* ---------- Revelado de elementos al hacer scroll ---------- */
+
+.lh-reveal{
+    opacity:0;
+    transform:translateY(35px);
+    transition:opacity .65s cubic-bezier(.22,1,.36,1),
+               transform .65s cubic-bezier(.22,1,.36,1);
+}
+
+.lh-reveal.lh-in-view{
+    opacity:1;
+    transform:translateY(0);
+}
+
+/* Variante: entra deslizando desde la izquierda */
+.lh-reveal.lh-reveal-left{
+    transform:translateX(-70px) translateY(0);
+}
+
+.lh-reveal.lh-reveal-left.lh-in-view{
+    transform:translateX(0) translateY(0);
+}
+
+/* Variante: entra deslizando desde la derecha */
+.lh-reveal.lh-reveal-right{
+    transform:translateX(70px) translateY(0);
+}
+
+.lh-reveal.lh-reveal-right.lh-in-view{
+    transform:translateX(0) translateY(0);
+}
+
+/* Variante: aparece con un "pop" (rebote sutil), ideal para tarjetas */
+.lh-reveal.lh-reveal-scale{
+    transform:translateY(25px) scale(.86);
+    transition:opacity .6s cubic-bezier(.34,1.56,.64,1),
+               transform .6s cubic-bezier(.34,1.56,.64,1);
+}
+
+.lh-reveal.lh-reveal-scale.lh-in-view{
+    transform:translateY(0) scale(1);
+}
+
+/* Efecto escalonado (stagger) para grupos de tarjetas */
+
+.cards .card:nth-child(1),
+.characters-grid .char-card:nth-child(1),
+.faq .card:nth-child(1),
+.map-rows .map-row:nth-child(1){
+    transition-delay:.05s;
+}
+
+.cards .card:nth-child(2),
+.characters-grid .char-card:nth-child(2),
+.faq .card:nth-child(2),
+.map-rows .map-row:nth-child(2){
+    transition-delay:.15s;
+}
+
+.cards .card:nth-child(3),
+.characters-grid .char-card:nth-child(3),
+.faq .card:nth-child(3),
+.map-rows .map-row:nth-child(3){
+    transition-delay:.25s;
+}
+
+.faq .card:nth-child(4),
+.map-rows .map-row:nth-child(4){
+    transition-delay:.35s;
+}
+
+/* ---------- Transiciones suaves reutilizables en toda la página ---------- */
+
+a, button, .btn, .login-btn, .card, .char-card, .content-card,
+.ods-card, .trailer-frame, .map-frame, .map-row, .map-row-img img{
+    transition:transform .4s cubic-bezier(.34,1.56,.64,1), box-shadow .35s ease,
+               opacity .35s ease, border-color .35s ease, color .3s ease;
+}
+
+/* Respeta a las personas que prefieren menos movimiento */
+
+@media (prefers-reduced-motion: reduce){
+
+    #lh-bg-canvas{
+        display:none;
+    }
+
+    .lh-wipe{
+        display:none;
+    }
+
+    body.lh-page,
+    .lh-reveal,
+    a, button, .btn, .login-btn, .card, .char-card, .content-card,
+    .ods-card, .trailer-frame, .map-frame, .map-row, .map-row-img img{
+        transition:none !important;
+        animation:none !important;
+    }
+
+    body.lh-page{
+        opacity:1;
+        transform:none;
+    }
+
+    .lh-reveal{
+        opacity:1;
+        transform:none;
+    }
+
+}

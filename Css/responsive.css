@@ -1,0 +1,505 @@
+/* ==========================================================
+   LAST HUNGER — Adaptación a todos los dispositivos
+   Se enlaza en todas las páginas DESPUÉS del CSS propio de
+   cada sección y de transitions.css, para unificar el
+   comportamiento en móvil, tablet y escritorio.
+   ========================================================== */
+
+/* ---------- Base ---------- */
+
+html{
+    -webkit-text-size-adjust:100%;
+    text-size-adjust:100%;
+    -webkit-tap-highlight-color:rgba(234,179,8,.25);
+}
+
+a:focus-visible,
+button:focus-visible,
+.char-flip:focus-visible{
+    outline:2px solid #eab308;
+    outline-offset:3px;
+}
+
+/* ---------- Fondo ----------
+   "background-attachment: fixed" se ve mal o se ignora en iOS.
+   Se reemplaza por una capa fija que funciona igual en todos
+   los dispositivos. La ruta es relativa a ESTE archivo. */
+
+body{
+    background-image:none;
+    background-color:#050302;
+}
+
+body::before{
+    content:"";
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    z-index:-3;
+    pointer-events:none;
+    background:#050302 url("../Imagenes/Fondo.jpg") center / cover no-repeat;
+}
+
+/* ---------- Cabecera ---------- */
+
+header{
+    padding-top:14px;
+    padding-bottom:14px;
+    padding-left:max(clamp(16px, 4vw, 60px), env(safe-area-inset-left));
+    padding-right:max(clamp(16px, 4vw, 60px), env(safe-area-inset-right));
+    padding-top:max(14px, env(safe-area-inset-top));
+}
+
+.logo{
+    font-size:clamp(18px, 4.6vw, 26px);
+    letter-spacing:clamp(1px, .5vw, 3px);
+    min-width:0;
+}
+
+.logo-img{
+    height:clamp(34px, 7vw, 45px);
+    width:auto;
+    margin-right:clamp(8px, 2vw, 15px);
+}
+
+.nav-toggle{
+    display:none;
+}
+
+.nav-label{
+    display:none;
+}
+
+/* Sin JavaScript: el menú simplemente se ajusta en varias filas */
+@media (max-width:980px){
+
+    header:not(.has-menu) nav{
+        display:flex;
+        flex-wrap:wrap;
+        align-items:center;
+        gap:10px 18px;
+        width:100%;
+        margin-top:10px;
+    }
+
+    header:not(.has-menu) nav a,
+    header:not(.has-menu) nav .login-btn{
+        margin:0;
+    }
+}
+
+/* Con JavaScript: botón de hamburguesa + menú desplegable */
+@media (max-width:980px){
+
+    header.has-menu{
+        justify-content:flex-start;
+        text-align:left;
+    }
+
+    header.has-menu .nav-toggle{
+        display:inline-flex;
+        flex-direction:column;
+        justify-content:center;
+        align-items:center;
+        gap:5px;
+        width:46px;
+        height:46px;
+        margin-left:8px;
+        padding:0;
+        background:rgba(255,255,255,.06);
+        border:1px solid rgba(234,179,8,.5);
+        border-radius:8px;
+        cursor:pointer;
+        flex-shrink:0;
+    }
+
+    .nav-toggle-bar{
+        display:block;
+        width:22px;
+        height:2px;
+        background:#eab308;
+        border-radius:2px;
+        transition:transform .3s ease, opacity .2s ease;
+    }
+
+    header.nav-open .nav-toggle-bar:nth-child(1){
+        transform:translateY(7px) rotate(45deg);
+    }
+
+    header.nav-open .nav-toggle-bar:nth-child(2){
+        opacity:0;
+    }
+
+    header.nav-open .nav-toggle-bar:nth-child(3){
+        transform:translateY(-7px) rotate(-45deg);
+    }
+
+    header.has-menu nav{
+        display:none;
+        flex-direction:column;
+        flex-basis:100%;
+        width:100%;
+        margin-top:10px;
+        max-height:calc(100vh - 90px);
+        max-height:calc(100dvh - 90px);
+        overflow-y:auto;
+        -webkit-overflow-scrolling:touch;
+    }
+
+    header.has-menu.nav-open nav{
+        display:flex;
+    }
+
+    header.has-menu nav a{
+        display:flex;
+        align-items:center;
+        min-height:48px;
+        margin:0;
+        padding:12px 6px;
+        font-size:18px;
+        border-top:1px solid rgba(255,255,255,.08);
+    }
+
+    header.has-menu nav a::after{
+        display:none;
+    }
+
+    header.has-menu nav a .nav-label{
+        display:inline;
+        margin-left:12px;
+    }
+
+    header.has-menu nav a.login-btn{
+        justify-content:center;
+        margin:12px 0 6px;
+        padding:12px 20px;
+        border-top:none;
+        font-weight:700;
+    }
+}
+
+/* ---------- Pantalla de inicio ---------- */
+
+.hero{
+    height:auto;
+    min-height:70vh;
+    min-height:70svh;
+    padding:56px 20px;
+}
+
+.hero h2{
+    font-size:clamp(30px, 7vw, 55px);
+    line-height:1.15;
+}
+
+.hero p{
+    font-size:clamp(16px, 2.4vw, 20px);
+}
+
+.hero .btn{
+    display:flex;
+    flex-wrap:wrap;
+    justify-content:center;
+    align-items:flex-end;
+    gap:10px 14px;
+    margin-top:28px;
+}
+
+.trailer-box{
+    padding:0 16px;
+}
+
+.cards{
+    padding:32px 16px;
+    gap:24px;
+}
+
+/* ---------- Ayuda ---------- */
+
+.help-container{
+    padding:clamp(32px, 6vw, 60px) 16px;
+}
+
+.help-container h2{
+    font-size:clamp(28px, 6vw, 40px);
+    margin-bottom:clamp(24px, 5vw, 40px);
+}
+
+.faq{
+    gap:24px;
+}
+
+/* ---------- Historia y Mapa: cabeceras de sección ---------- */
+
+.story-hero,
+.map-hero{
+    padding:clamp(40px, 8vw, 70px) 20px clamp(28px, 6vw, 50px);
+}
+
+.story-hero h2,
+.map-hero h2{
+    font-size:clamp(26px, 6.5vw, 44px);
+    overflow-wrap:anywhere;
+}
+
+.tagline{
+    font-size:clamp(16px, 2.6vw, 22px);
+}
+
+.section-title{
+    font-size:clamp(22px, 5vw, 30px);
+}
+
+.story-section{
+    padding:clamp(32px, 6vw, 50px) clamp(16px, 4vw, 40px);
+}
+
+/* ---------- Mapa ---------- */
+
+.map-section{
+    padding:0 clamp(16px, 4vw, 40px) clamp(32px, 6vw, 60px);
+}
+
+/* La imagen del mapa no tenía tamaño propio: en celular ensanchaba
+   toda la página. Ahora ocupa el ancho disponible y mantiene su forma. */
+.map-frame{
+    display:block;
+    aspect-ratio:auto;
+    padding:0;
+    overflow:hidden;
+}
+
+.map-frame img{
+    display:block;
+    width:100%;
+    height:auto;
+}
+
+.map-rows{
+    padding:20px clamp(16px, 4vw, 40px) clamp(40px, 8vw, 80px);
+}
+
+.map-row-text h4{
+    font-size:clamp(17px, 4vw, 20px);
+}
+
+/* ---------- Comentarios ---------- */
+
+.comments-container h2{
+    font-size:clamp(26px, 6vw, 36px);
+}
+
+.comment-name,
+.comment-text{
+    overflow-wrap:anywhere;
+}
+
+/* ---------- Pie de página ---------- */
+
+.site-footer{
+    padding-bottom:env(safe-area-inset-bottom);
+}
+
+.footer-line p,
+.footer-quote{
+    overflow-wrap:anywhere;
+}
+
+.footer-icons{
+    flex-wrap:wrap;
+    align-items:center;
+}
+
+/* ---------- Animaciones de entrada: sin desplazamiento lateral ----------
+   Las tarjetas que "entran" desde un lado se colocan 70 px fuera de su
+   sitio antes de aparecer; si el contenido ocupa casi todo el ancho, eso
+   ensancha la página (los móviles y tablets la alejan con zoom).
+   Por debajo de 1280 px solo suben desde abajo. */
+
+@media (max-width:1280px){
+
+    .lh-reveal.lh-reveal-left,
+    .lh-reveal.lh-reveal-right{
+        transform:translateY(28px);
+    }
+
+    .lh-reveal.lh-reveal-left.lh-in-view,
+    .lh-reveal.lh-reveal-right.lh-in-view{
+        transform:translateY(0);
+    }
+}
+
+/* ---------- Teléfonos ---------- */
+
+@media (max-width:768px){
+
+    /* El desenfoque de pantalla completa pesa mucho en móviles: se
+       sustituye por un oscurecido equivalente. */
+    .overlay{
+        backdrop-filter:none;
+        -webkit-backdrop-filter:none;
+        background:rgba(0,0,0,.68);
+    }
+
+    .footer-grid a{
+        padding:6px 0;
+    }
+}
+
+@media (max-width:600px){
+
+    .card{
+        width:100%;
+        max-width:420px;
+    }
+
+    .hero .btn img{
+        max-width:30vw;
+        height:auto;
+    }
+
+    .trailer-frame{
+        border-radius:10px;
+    }
+
+    .comments-container{
+        padding:36px 16px 30px;
+    }
+
+    .comment-box{
+        padding:20px 16px;
+    }
+
+    /* iOS hace zoom automático en campos con letra menor a 16px */
+    .field input[type="text"],
+    .field textarea{
+        font-size:16px;
+    }
+
+    .star{
+        font-size:30px;
+        min-width:44px;
+        min-height:44px;
+    }
+
+    .stars{
+        gap:4px;
+    }
+
+    .submit-btn{
+        align-self:stretch;
+        text-align:center;
+    }
+
+    .like-btn{
+        min-height:40px;
+    }
+
+    .footer-top{
+        padding-left:20px;
+        padding-right:20px;
+    }
+}
+
+@media (max-width:380px){
+
+    .footer-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+/* ---------- Historia: tarjetas giratorias en pantallas pequeñas ----------
+   Se usa el id para no afectar a la tarjeta de la comunidad. Alturas
+   medidas con el texto real del reverso, con margen para fuentes más anchas. */
+
+@media (max-width:768px){
+
+    #protagonista-flip{
+        height:400px;
+    }
+}
+
+@media (max-width:400px){
+
+    #protagonista-flip{
+        height:470px;
+    }
+}
+
+/* En 320-360 px el huerto quedaba cortado por el borde del escenario */
+@media (max-width:360px){
+
+    .walker{
+        width:108px;
+        height:108px;
+    }
+
+    .huerto{
+        left:calc(50% + 54px);
+        width:62px;
+        height:98px;
+    }
+
+    .cultivo{
+        bottom:21px;
+    }
+
+    .cultivo-brote{
+        width:25px;
+        height:42px;
+        left:2px;
+    }
+
+    .cultivo-maduro{
+        width:30px;
+        height:36px;
+        right:2px;
+    }
+}
+
+/* ---------- Pantallas táctiles: sin efectos "hover" pegados ---------- */
+
+@media (hover:none){
+
+    .card:hover,
+    .char-card:hover,
+    .content-card:hover,
+    .ods-card:hover,
+    .trailer-frame:hover,
+    .map-frame:hover,
+    .map-row:hover,
+    .login-btn:hover,
+    .like-btn:hover,
+    .footer-icons a:hover{
+        transform:none;
+    }
+
+    .map-row:hover .map-row-img img{
+        transform:scale(1.01);
+    }
+
+    nav a:hover::after{
+        width:0;
+    }
+}
+
+/* ---------- Pantallas muy bajas (celular en horizontal) ---------- */
+
+@media (max-height:480px) and (orientation:landscape){
+
+    .hero{
+        min-height:0;
+        padding:32px 20px;
+    }
+}
+
+/* ---------- Pantallas muy anchas ---------- */
+
+@media (min-width:1600px){
+
+    .hero h2{
+        font-size:64px;
+    }
+}
